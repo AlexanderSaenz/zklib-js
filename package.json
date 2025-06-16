@@ -1,30 +1,27 @@
 {
-  "name": "zklib-js",
-  "version": "1.3.3",
-  "description": "JavaScript module for ZKLib biometric devices",
+  "name": "zklib-js-zkteko",
+  "version": "1.3.4",
+  "description": "Improved JavaScript library for working with ZKTeco biometric attendance devices",
   "main": "zklib.js",
   "scripts": {
     "test": "node test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/merouanezouaid/zklib-js.git"
+    "url": "https://github.com/AlexanderSaenz/zklib-js"
   },
   "keywords": [
     "zkteco",
     "zklib",
-    "node-zklib",
-    "attendance-device",
     "attendance",
-    "biometrix-device"
+    "biometric",
+    "nodejs",
+    "device"
   ],
-  "author": "merouanezouaid",
-  "license": "ISC",
+  "author": "Alexander Saenz",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/merouanezouaid/zklib-js/issues"
+    "url": "https://github.com/AlexanderSaenz/zklib-js/issues"
   },
-  "homepage": "https://github.com/merouanezouaid/zklib-js#readme",
-  "dependencies": {
-    "zklib-js": "^1.0.0"
-  }
+  "homepage": "https://github.com/AlexanderSaenz/zklib-js#readme"
 }

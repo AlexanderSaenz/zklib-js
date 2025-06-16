@@ -1,99 +1,99 @@
-# zklib-js
+# zklib-js-zkteko
 
-A JavaScript library for interacting with ZK Time & Attendance devices.
+> 📦 Mejorada librería Node.js para conectarse a dispositivos biométricos ZKTeco (Asistencia y Huellas) vía UDP.
 
-## Installation
+Esta es una versión mejorada del proyecto original [`zklib-js`](https://github.com/merouanezouaid/zklib-js), con mejoras en compatibilidad, manejo de errores y nuevas funciones para dispositivos de control de asistencia.
 
-```bash
-npm i zklib-js
-```
+---
 
-## Usage
+## ✨ Características
 
-### Basic Example
+- Conexión vía UDP a dispositivos ZKTeco (modelos compatibles con ZKLib)
+- Obtención de registros de asistencia
+- Listado de usuarios
+- Manejo de fechas desde/hasta
+- Compatibilidad con múltiples modelos
+- Mejor manejo de desconexiones y errores
 
-```javascript
-const ZKLib = require('node-zklib')
+---
 
-async function test() {
-    let zkInstance = new ZKLib('192.168.1.201', 4370, 5200, 5000);
-    
-    try {
-        // Create socket to machine
-        await zkInstance.createSocket()
-        
-        // Get general info
-        console.log(await zkInstance.getInfo())
-        
-        // Get users in machine
-        const users = await zkInstance.getUsers()
-        console.log(users)
-        
-        // Get attendance logs
-        const logs = await zkInstance.getAttendances()
-        console.log(logs)
-        
-        // Disconnect
-        await zkInstance.disconnect()
-    } catch (e) {
-        console.log(e)
-    }
-}
+## 📦 Instalación
 
-test()
-```
+npm install zklib-js-zkteko
 
-### Available Functions
+## 🚀 Uso Básico
 
-- `createSocket()`: Establish connection with the device
-- `getInfo()`: Get general device information
-- `getUsers()`: Retrieve users from the device
-- `setUser(uid, userid, name, password, role = 0, cardno = 0)`: Create a new user
-- `getAttendances(callback)`: Get all attendance logs
-- `getRealTimeLogs(callback)`: Get real-time logs
-- `getTime()`: Get current time from the device
-- `getSerialNumber()`: Get device serial number
-- `getFirmware()`: Get firmware version
-- `getPIN()`: Get device PIN
-- `getFaceOn()`: Check if face recognition is enabled
-- `getSSR()`: Get Self-Service-Recorder status
-- `getDeviceVersion()`: Get device version
-- `getDeviceName()`: Get device name
-- `getPlatform()`: Get platform version
-- `getOS()`: Get OS version
-- `getWorkCode()`: Get work code
-- `getAttendanceSize()`: Get attendance log size
-- `clearAttendanceLog()`: Clear attendance logs
-- `disconnect()`: Disconnect from the device
+const ZKLib = require('zklib-js-zkteko');
 
-### Custom Commands
+const zk = new ZKLib('192.168.1.201', 4370); // IP y puerto del dispositivo
 
-You can execute custom commands using the `executeCmd` function:
+(async () => {
+  try {
+    // 1. Conexión al dispositivo
+    await zk.createSocket();
 
-```javascript
-async executeCmd(command, data='') {
-    return await this.functionWrapper(
-        () => this.zklibTcp.executeCmd(command, data),
-        () => this.zklibUdp.executeCmd(command, data)
-    )
-}
+    // 2. Obtener registros de asistencia
+    const attendance = await zk.getAttendances();
+    console.log(attendance.data);
 
-// Example: Unlock the door
-zkInstance.executeCmd(CMD.CMD_UNLOCK, '')
-```
+    // 3. Cerrar conexión
+    await zk.disconnect();
+  } catch (e) {
+    console.error('Error:', e);
+  }
+})();
 
-For more commands, refer to the [ZK protocol documentation](https://github.com/adrobinoga/zk-protocol/blob/master/protocol.md).
+## 🛠️ Funciones disponibles
+Método	                    Descripción
+createSocket()	            Establece la conexión con el dispositivo
+getAttendances()	        Recupera todos los registros de asistencia
+getUsers()	                Obtiene la lista de usuarios registrados
+getInfo()	                Devuelve información del dispositivo
+disconnect()	            Finaliza la conexión de forma segura
 
-## Credits
 
-This library is based on:
-- [php_zklib](https://github.com/dnaextrim/php_zklib)
-- [node-zklib](https://github.com/caobo171/node-zklib)
+## ✅ Compatibilidad probada
+Tested en los siguientes modelos de ZKTeco:
 
-## Contributing
+. K14
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+. MB160
 
-## License
+. iClock680
 
-[MIT License](LICENSE)
+. VF380
+
+. (y más modelos compatibles con protocolo ZKLib UDP)
+
+## ⚠️ Errores comunes
+Error / Excepción	                   Causa probable	                                Solución sugerida
+-Timeout: device not responding	       -IP/puerto incorrecto o fuera de red	            -Verifica IP, conexión y     que        el                                                                                    puerto sea 4370
+-UDP socket closed	                   -El dispositivo cerró la conexión	            -Asegúrate de no exceder solicitudes
+Error code 5	                       Comando inválido o no soportado por el modelo	-Cambia de función o actualiza    firmware
+
+## ⏱️ Ejemplo avanzado: Obtener registros desde una fecha
+const fromDate = new Date("2024-01-01T00:00:00");
+
+const logs = await zk.getAttendances({
+  from: fromDate
+});
+
+🛠️ API disponible
+Método	            Parámetros	             Descripción
+createSocket()	    —	                     Conecta al dispositivo
+disconnect()	    —	                     Cierra la conexión de forma segura
+getUsers()	        —	                     Devuelve los usuarios registrados
+getAttendances()	{ from, to } (op.)	     Registros de asistencia (puedes filtrar)
+
+## 🧪 Script de prueba 
+Puedes ejecutar pruebas rápidamente con:
+
+node test
+
+## 📚 Créditos y origen
+Basado en: zklib-js
+Autor original: Merouane Zouaid
+Mejoras y mantenimiento: Alexander Saenz
+
+## 📄 Licencia
+MIT License
