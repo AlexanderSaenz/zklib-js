@@ -234,3 +234,20 @@ module.exports.checkNotEventUDP = (data)=>{
   const commandId = this.decodeUDPHeader(data.subarray(0,8)).commandId
   return commandId === COMMANDS.CMD_REG_EVENT
 }
+
+module.exports.decodeRecordData49 = (recordData) => {
+  const record = {
+    userSn: recordData.readUIntLE(0, 2),  // Ejemplo: 2 bytes para el ID de usuario
+    deviceUserId: recordData
+      .slice(2, 2 + 9)
+      .toString('ascii')
+      .split('\0')
+      .shift(),  // 9 bytes para el ID de dispositivo
+    recordTime: parseTimeToDate(recordData.readUInt32LE(27)).toString(), // 4 bytes para el timestamp
+    // Agrega más campos según la estructura de tus 49 bytes
+    extraField1: recordData.readUInt8(31),  // Ejemplo de un campo adicional de 1 byte
+    extraField2: recordData.readUInt32LE(32), // Ejemplo de otro campo de 4 bytes
+    // Continúa con más campos según sea necesario
+  };
+  return record;
+};

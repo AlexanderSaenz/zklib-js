@@ -5,10 +5,11 @@ const { createTCPHeader,
   exportErrorMessage,
   removeTcpHeader,
   decodeUserData72,
-  decodeRecordData40,
   decodeRecordRealTimeLog52,
   checkNotEventTCP,
-  decodeTCPHeader } = require('./utils')
+  decodeTCPHeader, 
+  decodeRecordData49} = require('./utils')
+
 
 const { log } = require('./helpers/errorLog')
 const { error } = require('console')
@@ -423,12 +424,12 @@ class ZKLibTCP {
     }
 
 
-    const RECORD_PACKET_SIZE = 40
+    const RECORD_PACKET_SIZE = 49
 
     let recordData = data.data.subarray(4)
     let records = []
     while (recordData.length >= RECORD_PACKET_SIZE) {
-      const record = decodeRecordData40(recordData.subarray(0, RECORD_PACKET_SIZE))
+      const record = decodeRecordData49(recordData.subarray(0, RECORD_PACKET_SIZE))
       records.push({ ...record, ip: this.ip })
       recordData = recordData.subarray(RECORD_PACKET_SIZE)
     }
